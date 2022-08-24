@@ -15,3 +15,9 @@
     object-fit: cover;
     overflow: hidden;
 }
+
+.image-container img {
+    height: 30rem;
+    object-fit: cover;
+
+}
