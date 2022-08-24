@@ -57,28 +57,55 @@
             </div>
         </header>
 
-        <section style="background-color: red;">
-            <div class="">
-                <select class="form-select" aria-label="Default select
-                    example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-
-                <select class="form-select" aria-label="Default select
-                    example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+        <section class="py-5">
+            <div class="container">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-lg-3">
+                            <input class="form-control form-control-lg"
+                                type="text"
+                                placeholder="Buscar productos..."
+                                aria-label=".form-control-lg example">
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select form-select-lg"
+                                aria-label=".form-select-lg example">
+                                <option selected>Ordenar por</option>
+                                <option value="1">Mas relevantes</option>
+                                <option value="2">Menor precio</option>
+                                <option value="3">Mayor precio</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    $
+                                </span>
+                                <input type="text" class="form-control
+                                    form-control-lg"
+                                    aria-label="Min price"
+                                    placeholder="Desde...">
+                                <span class="input-group-text">
+                                    $
+                                </span>
+                                <input type="text" aria-label="Max price"
+                                    class="form-control form-control-lg"
+                                    placeholder="Hasta...">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 d-grid">
+                            <button type="submit" class="btn btn-dark
+                                btn-lg">
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
 
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
+        <section class="py-2">
+            <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3
                     row-cols-xl-4 justify-content-center">
                     <div class="col mb-5">
