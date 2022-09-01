@@ -1,60 +1,53 @@
-console.log("Con esta aplicacion podras filtrar productos de la tienda.");
-console.log("Al finalizar, obtendras la lista filtrada.");
-
 // Clase de producto de la tienda
 class Product {
-    constructor(name, price) {
+    constructor(id, name, price, src_img, alt_img) {
+        this.id = id;
         this.name = name;
         this.price = price;
+        this.src_img = src_img;
+        this.alt_img = alt_img;
+    }
+
+    generate_html() {
+        return `
+        <div class="col mb-5">
+            <div class="card h-100">
+                <img class="card-img-top"
+                    src="${this.src_img}"
+                    alt="${this.alt_img}" />
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <h5 class="fw-bolder">
+                            ${this.name}
+                        </h5>
+                        $${this.price}
+                    </div>
+                </div>
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                        <a class="btn btn-outline-dark mt-auto" href="#">
+                            Agregar al carrito
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
     }
 }
 
 // Suponemos un array de productos:
 let products_array = [
-    new Product("Alfajores San Valentin", 800),
-    new Product("Caja tentacion", 1500),
-    new Product("Cheescake", 800),
-    new Product("Alfajores de maicena", 800),
-    new Product("Caja de brownies", 1200),
-    new Product("Cakes", 1200),
-    new Product("Budines", 1000),
-    new Product("Alfacookies", 800),
+    new Product(1, "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(2, "Caja tentacion", 1500, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(3, "Cheescake", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(4, "Alfajores de maicena", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(5, "Caja de brownies", 1200, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(6, "Cakes", 1200, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(7, "Budines", 1000, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
+    new Product(8, "Alfacookies", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
 ];
 
-// Funciones de filtrado
-
-function filter_products_by_min_price(products_array, min_price) {
-    return products_array.filter(product => product.price >= min_price);
-}
-
-function filter_products_by_max_price(products_array, max_price) {
-    return products_array.filter(product => product.price <= max_price);
-}
-
-function filter_products_by_name(products_array, name) {
-    return products_array.filter(product => product.name.toLowerCase().includes(name.toLowerCase()));
-}
-
-// Ejemplo
-console.log("-----------------");
-console.log("Lista productos:");
-console.log(products_array);
-console.log("Lista filtrada que incluye la cadena 'ca':");
-console.log(filter_products_by_name(products_array, "ca"));
-
-// Suponemos un array del carrito vacio
-let products_cart = [];
-
-// Funcion para agregar productos al carrito
-function add_product_to_cart(products_array, product_id, products_cart) {
-    products_cart.push(products_array.find(product => product.name == product_id));
-}
-
-// Ejemplo de funcionamiento
-console.log("-----------------");
-console.log("Carrito vacio:");
-console.log(products_cart);
-console.log("Agregado producto Cakes:");
-add_product_to_cart(products_array, "Cakes", products_cart)
-console.log(products_cart);
-console.log("-----------------");
+let exampleProduct = products_array[0];
+let container = document.getElementById("products_container");
+container.innerHTML = exampleProduct.generate_html();
