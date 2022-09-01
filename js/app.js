@@ -1,5 +1,3 @@
-const MAX_ECOMMERCE_COLUMNS = 4;
-
 // Ecommerce product
 class Product {
     constructor(id, name, price, imgSrc, imgAlt) {
