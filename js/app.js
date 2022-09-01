@@ -1,20 +1,23 @@
 // Clase de producto de la tienda
 class Product {
-    constructor(id, name, price, src_img, alt_img) {
+    constructor(id, name, price, imgSrc, imgAlt) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.src_img = src_img;
-        this.alt_img = alt_img;
+        this.imgSrc = imgSrc;
+        this.imgAlt = imgAlt;
     }
 
-    generate_html() {
+    generateHtmlCard() {
+        /*
+        This function returns the product in a card html structure
+        */
         return `
         <div class="col mb-5">
             <div class="card h-100">
                 <img class="card-img-top"
-                    src="${this.src_img}"
-                    alt="${this.alt_img}" />
+                    src="${this.imgSrc}"
+                    alt="${this.imgAlt}" />
                 <div class="card-body p-4">
                     <div class="text-center">
                         <h5 class="fw-bolder">
@@ -37,7 +40,7 @@ class Product {
 }
 
 // Suponemos un array de productos:
-let products_array = [
+let productsArray = [
     new Product(1, "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
     new Product(2, "Caja tentacion", 1500, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
     new Product(3, "Cheescake", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
@@ -48,6 +51,6 @@ let products_array = [
     new Product(8, "Alfacookies", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"),
 ];
 
-let exampleProduct = products_array[0];
+let exampleProduct = productsArray[0];
 let container = document.getElementById("products_container");
-container.innerHTML = exampleProduct.generate_html();
+container.innerHTML = exampleProduct.generateHtmlCard();
