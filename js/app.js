@@ -162,12 +162,6 @@ function generateEcommerceContainerHTML(productsArray) {
     return productsContainerRow;
 }
 
-// Generate the ecommerce container:
-if (document.getElementById("products-container")) {
-    let ecommerceContainer = document.getElementById("products-container");
-    ecommerceContainer.appendChild(generateEcommerceContainerHTML(productsArray));
-}
-
 // Cart products
 let cartProductsArray = [
     new Product(
@@ -177,11 +171,21 @@ let cartProductsArray = [
         2, "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
     ),
 ];
-
 let cartProducts = new Cart(cartProductsArray);
 
-// Generate the cart container:
-if (document.getElementById("cart-container")) {
-    let cartContainer = document.getElementById("cart-container");
-    cartContainer.appendChild(cartProducts.generateCartContainerHTML());
+
+function renderProductsContainer(productsContainerId, productsToAppend) {
+    /*
+    This functions checks if document contains the productsContainerId and then appends productsToAppend to the container finded.
+    */
+    if (document.getElementById(productsContainerId)) {
+        let cartContainer = document.getElementById(productsContainerId);
+        cartContainer.appendChild(productsToAppend);
+    }
 }
+
+// Render cart container
+renderProductsContainer("cart-container", cartProducts.generateCartContainerHTML());
+
+// Render ecommerce container
+renderProductsContainer("ecommerce-container", generateEcommerceContainerHTML(productsArray));
