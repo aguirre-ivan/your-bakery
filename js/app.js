@@ -163,8 +163,10 @@ function generateEcommerceContainerHTML(productsArray) {
 }
 
 // Generate the ecommerce container:
-// let ecommerceContainer = document.getElementById("products-container");
-// ecommerceContainer.appendChild(generateEcommerceContainerHTML(productsArray));
+if (document.getElementById("products-container")) {
+    let ecommerceContainer = document.getElementById("products-container");
+    ecommerceContainer.appendChild(generateEcommerceContainerHTML(productsArray));
+}
 
 // Cart products
 let cartProductsArray = [
@@ -179,5 +181,7 @@ let cartProductsArray = [
 let cartProducts = new Cart(cartProductsArray);
 
 // Generate the cart container:
-let cartContainer = document.getElementById("cart-container");
-cartContainer.appendChild(cartProducts.generateCartContainerHTML());
+if (document.getElementById("cart-container")) {
+    let cartContainer = document.getElementById("cart-container");
+    cartContainer.appendChild(cartProducts.generateCartContainerHTML());
+}
