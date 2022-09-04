@@ -1,60 +1,191 @@
-console.log("Con esta aplicacion podras filtrar productos de la tienda.");
-console.log("Al finalizar, obtendras la lista filtrada.");
-
-// Clase de producto de la tienda
+// Ecommerce product
 class Product {
-    constructor(name, price) {
+    constructor(id, name, price, imgSrc, imgAlt) {
+        this.id = id;
         this.name = name;
         this.price = price;
+        this.imgSrc = imgSrc;
+        this.imgAlt = imgAlt;
+    }
+
+    generateEcommerceCardHTML() {
+        /*
+        This function returns the product in a div card html structure for eccommerce section.
+        */
+        let div = document.createElement("div");
+        div.classList.add("col", "mb-5");
+        div.innerHTML = `
+            <div class="card h-100">
+                <img class="card-img-top"
+                    src="${this.imgSrc}"
+                    alt="${this.imgAlt}" />
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <h5 class="fw-bolder">
+                            ${this.name}
+                        </h5>
+                        $${this.price}
+                    </div>
+                </div>
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                        <button class="btn btn-outline-dark mt-auto"
+                            onclick="addProductToCart(${this.id})">
+                            Agregar al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        return div;
     }
 }
 
-// Suponemos un array de productos:
-let products_array = [
-    new Product("Alfajores San Valentin", 800),
-    new Product("Caja tentacion", 1500),
-    new Product("Cheescake", 800),
-    new Product("Alfajores de maicena", 800),
-    new Product("Caja de brownies", 1200),
-    new Product("Cakes", 1200),
-    new Product("Budines", 1000),
-    new Product("Alfacookies", 800),
+class Cart {
+    constructor(productsArray) {
+        this.productsArray = productsArray;
+    }
+
+    getTotalPrice() {
+        let totalPrice = 0;
+        return totalPrice;
+    }
+
+    generateCartContainerHTML() {
+        /*
+        This function returns the productsArray in a div cart html structure for Cart section.
+        */
+        let divCartContainer = document.createElement("div");
+        divCartContainer.classList.add("col");
+
+        this.productsArray.forEach(product => {
+            let divCard = document.createElement("div");
+            divCard.classList.add("row", "justify-content-center");
+            divCard.innerHTML = `
+                <div class="card mb-3" style="max-width: 800px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img
+                                src="${product.imgSrc}"
+                                class="img-fluid rounded-start"
+                                alt="${product.imgAlt}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    ${product.name}
+                                </h5>
+                                <p class="card-text">
+                                    $${product.price}
+                                </p>
+                                <p class="card-text">
+                                    Cantidad: 1
+                                </p>
+                                <div class="btn-group me-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-dark">
+                                    --
+                                </button>
+                                <button type="button" class="btn btn-dark">
+                                    +
+                                </button>
+                            </div>
+                                <button href="#" class="btn btn-danger">
+                                    Quitar del carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            divCartContainer.appendChild(divCard);
+        });
+
+        let divTotal = document.createElement("div");
+        divTotal.innerHTML = `
+            <div class="row offset-8 text-end pt-4" style="max-width: 200px;">
+                <p class="h4">
+                    Total: $1200
+                </p>
+                <a href="#" class="btn btn-dark">
+                    Comprar
+                </a>
+            </div>
+        `;
+
+        divCartContainer.appendChild(divTotal);
+
+        return divCartContainer;
+    }
+}
+
+// Products array of ecommerce
+var productsArray = [
+    new Product(
+        1, "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"
+    ),
+    new Product(
+        2, "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
+    ),
+    new Product(
+        3, "Cheescake", 800, "../assets/img/products/cheesecake.jpg", "Torta cheesecake"
+    ),
+    new Product(
+        4, "Alfajores de maicena", 800, "../assets/img/products/alfajores_maicena.jpg", "9 alfajores de maicena apilados"
+    ),
+    new Product(
+        5, "Caja de 9 brownies decorados", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
+    ),
+    new Product(
+        6, "Cakes", 1200, "../assets/img/products/cakes.jpg", "Caja de 3 tortas"
+    ),
+    new Product(
+        7, "Budines", 1000, "../assets/img/products/budines.jpg", "Caja de 3 budines"
+    ),
+    new Product(
+        8, "Alfacookies", 800, "../assets/img/products/alfacookies.jpg", "Caja de 9 alfacookies"
+    ),
 ];
 
-// Funciones de filtrado
+function generateEcommerceContainerHTML(productsArray) {
+    /*
+    This functions returns an eccomerce div container with all cards product of productsArray.
+    */
+    let productsContainerRow = document.createElement("div");
+    productsContainerRow.classList.add("row", "gx-4", "gx-lg-5", "row-cols-2", "row-cols-md-3", "row-cols-xl-4", "justify-content-center");
 
-function filter_products_by_min_price(products_array, min_price) {
-    return products_array.filter(product => product.price >= min_price);
+    productsArray.forEach(product => {
+        productsContainerRow.appendChild(
+            product.generateEcommerceCardHTML()
+        );
+    });
+
+    return productsContainerRow;
 }
 
-function filter_products_by_max_price(products_array, max_price) {
-    return products_array.filter(product => product.price <= max_price);
+// Cart products
+let cartProductsArray = [
+    new Product(
+        1, "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"
+    ),
+    new Product(
+        2, "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
+    ),
+];
+let cartProducts = new Cart(cartProductsArray);
+
+
+function renderProductsContainer(productsContainerId, productsToAppend) {
+    /*
+    This functions checks if document contains the productsContainerId and then appends productsToAppend to the container finded.
+    */
+    if (document.getElementById(productsContainerId)) {
+        let cartContainer = document.getElementById(productsContainerId);
+        cartContainer.appendChild(productsToAppend);
+    }
 }
 
-function filter_products_by_name(products_array, name) {
-    return products_array.filter(product => product.name.toLowerCase().includes(name.toLowerCase()));
-}
+// Render cart container
+renderProductsContainer("cart-container", cartProducts.generateCartContainerHTML());
 
-// Ejemplo
-console.log("-----------------");
-console.log("Lista productos:");
-console.log(products_array);
-console.log("Lista filtrada que incluye la cadena 'ca':");
-console.log(filter_products_by_name(products_array, "ca"));
-
-// Suponemos un array del carrito vacio
-let products_cart = [];
-
-// Funcion para agregar productos al carrito
-function add_product_to_cart(products_array, product_id, products_cart) {
-    products_cart.push(products_array.find(product => product.name == product_id));
-}
-
-// Ejemplo de funcionamiento
-console.log("-----------------");
-console.log("Carrito vacio:");
-console.log(products_cart);
-console.log("Agregado producto Cakes:");
-add_product_to_cart(products_array, "Cakes", products_cart)
-console.log(products_cart);
-console.log("-----------------");
+// Render ecommerce container
+renderProductsContainer("ecommerce-container", generateEcommerceContainerHTML(productsArray));
