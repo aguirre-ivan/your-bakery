@@ -15,7 +15,7 @@ class Product {
         let div = document.createElement("div");
         div.classList.add("col", "mb-5");
         div.innerHTML = `
-            <div class="card h-100">
+            <div class="card h-100 id="${this.id}">
                 <img class="card-img-top"
                     src="${this.imgSrc}"
                     alt="${this.imgAlt}" />
@@ -29,8 +29,7 @@ class Product {
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
-                        <button class="btn btn-outline-dark mt-auto"
-                            onclick="addProductToCart(${this.id})">
+                        <button class="btn btn-outline-dark mt-auto button-add-to-cart">
                             Agregar al carrito
                         </button>
                     </div>
@@ -89,7 +88,7 @@ class Cart {
                                     +
                                 </button>
                             </div>
-                                <button href="#" class="btn btn-danger">
+                                <button class="btn btn-danger button-quit-from-cart">
                                     Quitar del carrito
                                 </button>
                             </div>
@@ -189,3 +188,13 @@ renderProductsContainer("cart-container", cartProducts.generateCartContainerHTML
 
 // Render ecommerce container
 renderProductsContainer("ecommerce-container", generateEcommerceContainerHTML(productsArray));
+
+let buttonsQuitFromCart = document.querySelectorAll(".button-quit-from-cart");
+
+for (let button of buttonsQuitFromCart) {
+    button.addEventListener("click", quitProductFromCart);
+}
+
+function quitProductFromCart(event) {
+    let productDiv = event.target.parentNode.parentNode.parentNode.parentNode.remove();
+}
