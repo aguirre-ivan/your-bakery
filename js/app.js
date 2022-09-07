@@ -2,8 +2,15 @@
  *                              CONSTS
  * *****************************************************************/
 
+// Container IDs
 const CART_CONTAINER_ID = "cart-container";
 const ECOMMERCE_CONTAINER_ID = "ecommerce-container";
+
+// Buttons classes
+const BUTTON_ADD_PRODUCT = "button-add-product";
+const BUTTON_SUBSTRACT_FROM_CART = "button-substract-from-cart";
+const BUTTON_ADD_TO_CART = "button-add-to-cart";
+const BUTTON_REMOVE_FROM_CART = "button-remove-from-cart";
 
 /* *****************************************************************
  *                              CLASSES
@@ -21,6 +28,9 @@ class Product {
     }
 
     resetQuantity() {
+        /*
+        This function reset the product quantity to 1.
+        */
         this.quantity = 1;
     }
 
@@ -45,7 +55,7 @@ class Product {
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
-                        <button class="btn btn-outline-dark mt-auto button-add-product">
+                        <button class="btn btn-outline-dark mt-auto ${BUTTON_ADD_PRODUCT}">
                             Agregar al carrito
                         </button>
                     </div>
@@ -63,6 +73,9 @@ class Cart {
     }
 
     getTotalPrice() {
+        /*
+        This function returns the total price of all products in cart.
+        */
         let totalPrice = 0;
         (this.cartArray).forEach(product => {
             totalPrice += parseFloat(product.price) * parseInt(product.quantity);
@@ -71,6 +84,9 @@ class Cart {
     }
 
     getTotalQuantity() {
+        /*
+        This function returns the total quantity of products in cart.
+        */
         let totalQuantity = 0;
         (this.cartArray).forEach(product => {
             totalQuantity += parseInt(product.quantity);
@@ -80,7 +96,7 @@ class Cart {
 
     generateCartContainerHTML() {
         /*
-        This function returns the productsArray in a div cart html structure for Cart section.
+        This function returns the cartArray in a div cart html structure for Cart section.
         */
         let divCartContainer = document.createElement("div");
         divCartContainer.classList.add("col");
@@ -109,14 +125,14 @@ class Cart {
                                     Cantidad: ${product.quantity}
                                 </p>
                                 <div class="btn-group me-2" role="group" aria-label="First group">
-                                    <button type="button" class="btn btn-dark button-rest-from-cart">
+                                    <button type="button" class="btn btn-dark ${BUTTON_SUBSTRACT_FROM_CART}">
                                         --
                                     </button>
-                                    <button type="button" class="btn btn-dark button-add-to-cart">
+                                    <button type="button" class="btn btn-dark ${BUTTON_ADD_TO_CART}">
                                         +
                                     </button>
                                 </div>
-                                <button class="btn btn-danger button-remove-from-cart">
+                                <button class="btn btn-danger ${BUTTON_REMOVE_FROM_CART}">
                                     Quitar del carrito
                                 </button>
                             </div>
@@ -145,6 +161,9 @@ class Cart {
     }
 
     generateEmptyCartContainerHTML() {
+        /*
+        This function generates an empty cart div html structure for Cart section.
+        */
         let divCartContainer = document.createElement("div");
         divCartContainer.classList.add("col");
         divCartContainer.innerHTML = `
@@ -164,11 +183,17 @@ class Cart {
     }
 
     renderCartNavbar() {
+        /*
+        Renders the navbar cart number, with the total quantity of products in cart.
+        */
         let spanQuantity = document.getElementById("cartQuantity");
         spanQuantity.innerHTML = this.getTotalQuantity();
     }
 
     renderCartContainerFromLocalStorage() {
+        /*
+        Renders the cart section from the products in localStorage['cart'].
+        */
         this.updateCartArrayFromLocalStorage();
         this.renderCartNavbar();
 
@@ -184,6 +209,9 @@ class Cart {
     }
 
     updateRenderFromLocalStorage() {
+        /*
+        Updates the Cart Section render based on localStorage['cart'].
+        */
         if (document.getElementById(CART_CONTAINER_ID)) {
             let container = document.getElementById(CART_CONTAINER_ID);
             while (container.firstChild) {
@@ -195,15 +223,25 @@ class Cart {
     }
 
     updateCartArrayFromLocalStorage() {
+        /*
+        Updates cartArray based on localStorage['cart'].
+        */
         this.cartArray = JSON.parse(localStorage.getItem("cart"));
     }
 
     updateCartArrayInLocalStorage() {
+        /*
+        Updates localStorage['cart'] based on cartArray .
+        */
         let arrayJSON = JSON.stringify(this.cartArray);
         localStorage.setItem("cart", arrayJSON);
     }
 
     addProductToCart(product) {
+        /*
+        Adds a product to cartArray and updates localStorage['cart'] whit this.updateCartArrayInLocalStorage().
+        It also updates the render of cart section whit this.updateRenderFromLocalStorage().
+        */
         let productIsInCart = false;
 
         (this.cartArray).forEach(cartProduct => {
@@ -221,7 +259,12 @@ class Cart {
         this.updateRenderFromLocalStorage();
     }
 
-    restProductFromCart(product) {
+    substractProductFromCart(product) {
+        /*
+        Substract the product from cartArray and updates localStorage['cart'] whit this.updateCartArrayInLocalStorage().
+        If product.quantity becomes 0, this function removes the product from cart with this.removeProductFromCart(product).
+        It also updates the render of cart section whit this.updateRenderFromLocalStorage().
+        */
         for (let i = 0; i < this.cartArray.length; i++) {
             if (this.cartArray[i].productId === product.productId) {
                 (this.cartArray[i]).quantity = parseInt(this.cartArray[i].quantity) - 1;
@@ -237,6 +280,10 @@ class Cart {
     }
 
     removeProductFromCart(product) {
+        /*
+        Removes a product from cartArray and updates localStorage['cart'] whit this.updateCartArrayInLocalStorage().
+        It also updates the render of cart section whit this.updateRenderFromLocalStorage().
+        */
         product.resetQuantity();
 
         this.cartArray = this.cartArray.filter(cartProduct => cartProduct.productId != product.productId);
@@ -257,6 +304,7 @@ if (!localStorage.getItem("cart")) {
     localStorage.setItem("cart", []);
 }
 
+// Cart object initialization
 let cart = new Cart;
 
 // Render cart container from localStorage
@@ -335,18 +383,22 @@ function generateEcommerceContainerHTML(productsArray) {
  * *****************************************************************/
 
 function cartEventListeners(cart) {
-    let buttonsRestFromCart = document.querySelectorAll(".button-rest-from-cart");
-    let buttonsAddToCart = document.querySelectorAll(".button-add-to-cart");
-    let buttonsRemoveFromCart = document.querySelectorAll(".button-remove-from-cart");
+    /*
+    Event listeners from cart section.
+    It includes buttons 'button-substract-from-cart', 'button-add-to-cart' and 'button-remove-from-cart'. Based on the button selected, this function uses the respective cart methods: cart.substractProductFromCart(product), cart.substractProductFromCart(product) or cart.addProductToCart(product).
+    */
+    let buttonsSubstractFromCart = document.querySelectorAll(`.${BUTTON_SUBSTRACT_FROM_CART}`);
+    let buttonsAddToCart = document.querySelectorAll(`.${BUTTON_ADD_TO_CART}`);
+    let buttonsRemoveFromCart = document.querySelectorAll(`.${BUTTON_REMOVE_FROM_CART}`);
 
     let getProduct = function (divTarget) {
         let productId = (divTarget.parentNode.parentNode.parentNode.parentNode).getAttribute('id');
         return productsArray.find(cartProduct => cartProduct.productId === productId);
     }
 
-    for (let button of buttonsRestFromCart) {
+    for (let button of buttonsSubstractFromCart) {
         button.addEventListener("click", function (event) {
-            cart.restProductFromCart(getProduct(event.target.parentNode));
+            cart.substractProductFromCart(getProduct(event.target.parentNode));
         });
     }
 
@@ -364,7 +416,11 @@ function cartEventListeners(cart) {
 }
 
 function ecommerceEventListeners() {
-    let buttonsAddToCart = document.querySelectorAll(".button-add-product");
+    /*
+    Event listeneres from ecommerce section.
+    It includes the button 'button-add-product' and uses the cart method cart.addProductToCart(product).
+    */
+    let buttonsAddToCart = document.querySelectorAll(`.${BUTTON_ADD_PRODUCT}`);
 
     let getProduct = function (divTarget) {
         let productId = (divTarget.parentNode.parentNode.parentNode).getAttribute("id");
