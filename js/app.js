@@ -1,4 +1,11 @@
 /* *****************************************************************
+ *                              CONSTS
+ * *****************************************************************/
+
+const CART_CONTAINER_ID = "cart-container";
+const ECOMMERCE_CONTAINER_ID = "ecommerce-container";
+
+/* *****************************************************************
  *                              CLASSES
  * *****************************************************************/
 
@@ -156,21 +163,29 @@ class Cart {
         return divCartContainer;
     }
 
+    renderCartNavbar() {
+        let spanQuantity = document.getElementById("cartQuantity");
+        spanQuantity.innerHTML = this.getTotalQuantity();
+    }
+
     renderCartContainerFromLocalStorage() {
         this.updateCartArrayFromLocalStorage();
+        this.renderCartNavbar();
 
-        if (this.cartArray.length === 0) {
-            renderProductsContainer("cart-container", this.generateEmptyCartContainerHTML());
-        } else {
-            renderProductsContainer("cart-container", this.generateCartContainerHTML());
+        if (document.getElementById(CART_CONTAINER_ID)) {
+            if (this.cartArray.length === 0) {
+                renderProductsContainer(CART_CONTAINER_ID, this.generateEmptyCartContainerHTML());
+            } else {
+                renderProductsContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
+            }
         }
 
         cartEventListeners(cart);
     }
 
     updateRenderFromLocalStorage() {
-        if (document.getElementById("cart-container")) {
-            let container = document.getElementById("cart-container");
+        if (document.getElementById(CART_CONTAINER_ID)) {
+            let container = document.getElementById(CART_CONTAINER_ID);
             while (container.firstChild) {
                 container.removeChild(container.firstChild);
             }
@@ -232,7 +247,7 @@ class Cart {
 }
 
 /* *****************************************************************
- *                              INITIALIZATION
+ *                         INITIALIZATION
  * *****************************************************************/
 
 /*                              CART                               */
@@ -246,7 +261,6 @@ let cart = new Cart;
 
 // Render cart container from localStorage
 cart.renderCartContainerFromLocalStorage();
-
 
 /*                          ECOMMERCE                             */
 
@@ -279,7 +293,9 @@ var productsArray = [
 ];
 
 // Render ecommerce container
-renderProductsContainer("ecommerce-container", generateEcommerceContainerHTML(productsArray));
+if (document.getElementById(ECOMMERCE_CONTAINER_ID)) {
+    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+}
 
 // Event listeners on ecommerce
 ecommerceEventListeners();
