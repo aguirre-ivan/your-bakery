@@ -195,7 +195,8 @@ class Cart {
     }
 
     updateCartArrayFromLocalStorage() {
-        this.cartArray = JSON.parse(localStorage.getItem("cart"));
+        let cartJSONInLocalStorage = localStorage.getItem("cart");
+        this.cartArray = cartJSONInLocalStorage.length === 0 ? [] : JSON.parse(cartJSONInLocalStorage);
     }
 
     updateCartArrayInLocalStorage() {
