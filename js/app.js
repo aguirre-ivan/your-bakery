@@ -214,6 +214,8 @@ class Cart {
     }
 
     removeProductFromCart(product) {
+        product.resetQuantity();
+
         this.cartArray = this.cartArray.filter(cartProduct => cartProduct.productId != product.productId);
 
         this.updateCartArrayInLocalStorage();
