@@ -24,7 +24,7 @@ class Product {
         let div = document.createElement("div");
         div.classList.add("col", "mb-5");
         div.innerHTML = `
-            <div class="card h-100 id="${this.productId}">
+            <div class="card h-100" id="${this.productId}">
                 <img class="card-img-top"
                     src="${this.imgSrc}"
                     alt="${this.imgAlt}" />
@@ -38,7 +38,7 @@ class Product {
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
-                        <button class="btn btn-outline-dark mt-auto button-add-to-cart">
+                        <button class="btn btn-outline-dark mt-auto button-add-product">
                             Agregar al carrito
                         </button>
                     </div>
@@ -61,6 +61,14 @@ class Cart {
             totalPrice += parseFloat(product.price) * parseInt(product.quantity);
         })
         return totalPrice;
+    }
+
+    getTotalQuantity() {
+        let totalQuantity = 0;
+        (this.cartArray).forEach(product => {
+            totalQuantity += parseInt(product.quantity);
+        })
+        return totalQuantity;
     }
 
     generateCartContainerHTML() {
@@ -150,7 +158,6 @@ class Cart {
 
     renderCartContainerFromLocalStorage() {
         this.updateCartArrayFromLocalStorage();
-        console.log(this.cartArray);
 
         if (this.cartArray.length === 0) {
             renderProductsContainer("cart-container", this.generateEmptyCartContainerHTML());
@@ -162,17 +169,18 @@ class Cart {
     }
 
     updateRenderFromLocalStorage() {
-        let container = document.getElementById("cart-container");
-        while (container.firstChild) {
-            container.removeChild(container.firstChild);
+        if (document.getElementById("cart-container")) {
+            let container = document.getElementById("cart-container");
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
         }
+
         this.renderCartContainerFromLocalStorage();
     }
 
     updateCartArrayFromLocalStorage() {
-        let cartJSON = localStorage.getItem("cart");
-        let emptyArray = [];
-        return (cartJSON.length === 0) ? emptyArray : JSON.parse(cartJSON);
+        this.cartArray = JSON.parse(localStorage.getItem("cart"));
     }
 
     updateCartArrayInLocalStorage() {
@@ -273,6 +281,9 @@ var productsArray = [
 // Render ecommerce container
 renderProductsContainer("ecommerce-container", generateEcommerceContainerHTML(productsArray));
 
+// Event listeners on ecommerce
+ecommerceEventListeners();
+
 /* *****************************************************************
  *                              FUNCTIONS
  * *****************************************************************/
@@ -289,7 +300,7 @@ function renderProductsContainer(productsContainerId, productsToAppend) {
 
 function generateEcommerceContainerHTML(productsArray) {
     /*
-    This function returns an eccomerce div container with all cards product of productsArray.
+    This function returns an ecommerce div container with all cards product of productsArray.
     */
     let productsContainerRow = document.createElement("div");
     productsContainerRow.classList.add("row", "gx-4", "gx-lg-5", "row-cols-2", "row-cols-md-3", "row-cols-xl-4", "justify-content-center");
@@ -325,15 +336,28 @@ function cartEventListeners(cart) {
 
     for (let button of buttonsAddToCart) {
         button.addEventListener("click", function (event) {
-            console.log(getProduct(event.target));
             cart.addProductToCart(getProduct(event.target.parentNode));
         });
     }
 
     for (let button of buttonsRemoveFromCart) {
         button.addEventListener("click", function (event) {
-            console.log(getProduct(event.target));
             cart.removeProductFromCart(getProduct(event.target)); // removeProductButton is one div up
+        });
+    }
+}
+
+function ecommerceEventListeners() {
+    let buttonsAddToCart = document.querySelectorAll(".button-add-product");
+
+    let getProduct = function (divTarget) {
+        let productId = (divTarget.parentNode.parentNode.parentNode).getAttribute("id");
+        return productsArray.find(cartProduct => cartProduct.productId === productId);
+    }
+
+    for (let button of buttonsAddToCart) {
+        button.addEventListener("click", function (event) {
+            cart.addProductToCart(getProduct(event.target));
         });
     }
 }
