@@ -13,6 +13,10 @@ class Product {
         this.quantity = 1;
     }
 
+    resetQuantity() {
+        this.quantity = 1;
+    }
+
     generateEcommerceCardHTML() {
         /*
         This function returns the product in a div card html structure for eccommerce section.
@@ -70,7 +74,7 @@ class Cart {
             let divCard = document.createElement("div");
             divCard.classList.add("row", "justify-content-center");
             divCard.innerHTML = `
-                <div class="card mb-3" style="max-width: 800px;">
+                <div class="card mb-3" style="max-width: 800px;" id="${product.productId}">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img
@@ -90,14 +94,14 @@ class Cart {
                                     Cantidad: ${product.quantity}
                                 </p>
                                 <div class="btn-group me-2" role="group" aria-label="First group">
-                                <button type="button" class="btn btn-dark">
-                                    --
-                                </button>
-                                <button type="button" class="btn btn-dark">
-                                    +
-                                </button>
-                            </div>
-                                <button class="btn btn-danger button-quit-from-cart">
+                                    <button type="button" class="btn btn-dark button-rest-from-cart">
+                                        --
+                                    </button>
+                                    <button type="button" class="btn btn-dark button-add-to-cart">
+                                        +
+                                    </button>
+                                </div>
+                                <button class="btn btn-danger button-remove-from-cart">
                                     Quitar del carrito
                                 </button>
                             </div>
@@ -153,6 +157,8 @@ class Cart {
         } else {
             renderProductsContainer("cart-container", this.generateCartContainerHTML());
         }
+
+        cartEventListeners(cart);
     }
 
     updateRenderFromLocalStorage() {
@@ -208,7 +214,6 @@ class Cart {
     }
 
     removeProductFromCart(product) {
-        product.quantity = 1;
         this.cartArray = this.cartArray.filter(cartProduct => cartProduct.productId != product.productId);
 
         this.updateCartArrayInLocalStorage();
@@ -296,4 +301,37 @@ function generateEcommerceContainerHTML(productsArray) {
     return productsContainerRow;
 }
 
+/* *****************************************************************
+ *                     EVENT LISTENERS FUNCTIONS
+ * *****************************************************************/
 
+function cartEventListeners(cart) {
+    let buttonsRestFromCart = document.querySelectorAll(".button-rest-from-cart");
+    let buttonsAddToCart = document.querySelectorAll(".button-add-to-cart");
+    let buttonsRemoveFromCart = document.querySelectorAll(".button-remove-from-cart");
+
+    let getProduct = function (divTarget) {
+        let productId = (divTarget.parentNode.parentNode.parentNode.parentNode).getAttribute('id');
+        return productsArray.find(cartProduct => cartProduct.productId === productId);
+    }
+
+    for (let button of buttonsRestFromCart) {
+        button.addEventListener("click", function (event) {
+            cart.restProductFromCart(getProduct(event.target.parentNode));
+        });
+    }
+
+    for (let button of buttonsAddToCart) {
+        button.addEventListener("click", function (event) {
+            console.log(getProduct(event.target));
+            cart.addProductToCart(getProduct(event.target.parentNode));
+        });
+    }
+
+    for (let button of buttonsRemoveFromCart) {
+        button.addEventListener("click", function (event) {
+            console.log(getProduct(event.target));
+            cart.removeProductFromCart(getProduct(event.target)); // removeProductButton is one div up
+        });
+    }
+}
