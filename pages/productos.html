@@ -71,19 +71,21 @@
 
         <section class="py-5">
             <div class="container">
-                <form>
+                <form id="filterForm">
                     <div class="row g-3">
                         <div class="col-lg-3">
                             <input class="form-control form-control-lg"
                                 type="text"
                                 placeholder="Buscar productos..."
-                                aria-label=".form-control-lg example">
+                                aria-label=".form-control-lg example"
+                                name="productName">
                         </div>
                         <div class="col-lg-3">
                             <select class="form-select form-select-lg"
-                                aria-label=".form-select-lg example">
-                                <option selected>Ordenar por</option>
-                                <option value="1">Mas relevantes</option>
+                                aria-label=".form-select-lg example"
+                                name="selectSort">
+                                <option selected value="0">Ordenar por</option>
+                                <option value="1">Nombre</option>
                                 <option value="2">Menor precio</option>
                                 <option value="3">Mayor precio</option>
                             </select>
@@ -93,26 +95,28 @@
                                 <span class="input-group-text">
                                     $
                                 </span>
-                                <input type="text" class="form-control
+                                <input type="number" class="form-control
                                     form-control-lg"
                                     aria-label="Min price"
-                                    placeholder="Desde...">
+                                    placeholder="Desde..."
+                                    name="minPrice">
                                 <span class="input-group-text">
                                     $
                                 </span>
-                                <input type="text" aria-label="Max price"
+                                <input type="number" aria-label="Max price"
                                     class="form-control form-control-lg"
-                                    placeholder="Hasta...">
+                                    placeholder="Hasta..."
+                                    name="maxPrice">
                             </div>
                         </div>
                         <div class="col-lg-2 d-grid">
                             <button type="submit" class="btn btn-dark
                                 btn-lg">
-                                Buscar
+                                Filtrar
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </section>
 
