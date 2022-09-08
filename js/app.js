@@ -12,6 +12,18 @@ const BUTTON_SUBSTRACT_FROM_CART = "button-substract-from-cart";
 const BUTTON_ADD_TO_CART = "button-add-to-cart";
 const BUTTON_REMOVE_FROM_CART = "button-remove-from-cart";
 
+// Form names
+const NAME_PRODUCT_NAME = "productName"
+const NAME_MIN_PRICE = "minPrice"
+const NAME_MAX_PRICE = "maxPrice"
+const NAME_SELECT_SORT = "selectSort"
+
+// Sort numbers
+const SORT_NONE = 0;
+const SORT_NAME = 1;
+const SORT_DESC = 2;
+const SORT_ASC = 3;
+
 /* *****************************************************************
  *                              CLASSES
  * *****************************************************************/
@@ -208,12 +220,7 @@ class Cart {
         /*
         Updates the Cart Section render based on localStorage['cart'].
         */
-        if (document.getElementById(CART_CONTAINER_ID)) {
-            let container = document.getElementById(CART_CONTAINER_ID);
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
-        }
+        cleanRender(CART_CONTAINER_ID);
 
         this.renderCartContainerFromLocalStorage();
     }
@@ -358,6 +365,7 @@ var productsArray = [
 // Render ecommerce container
 if (document.getElementById(ECOMMERCE_CONTAINER_ID)) {
     renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+    filterFormEventListeners();
 }
 
 // Event listeners on ecommerce
@@ -393,29 +401,75 @@ function generateEcommerceContainerHTML(productsArray) {
     return productsContainerRow;
 }
 
+function cleanRender(containerId) {
+    /*
+    Removes children of the div whit id=containerId.
+    */
+    if (document.getElementById(containerId)) {
+        let container = document.getElementById(containerId);
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+    }
+}
+
+function updateEcommerceContainer(productsArray) {
+    /*
+    Updates the ecommerce container. First cleans the render and then render the products container with productsArray.
+    */
+    cleanRender(ECOMMERCE_CONTAINER_ID);
+    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+}
+
 /* *****************************************************************
  *                    FILTER AND ORDER FUNCTIONS
  * *****************************************************************/
 
+function filterProductsByName(productsArray, inputName) {
+    /*
+    Returns the array of products whit products that includes inputName.
+    If inputName is null, this function returns the productsArray.
+    */
+    return inputName ? productsArray.filter(product => product.name.toLowerCase().includes(inputName.toLowerCase())) : productsArray;
+}
+
 function filterProductsByMinPrice(productsArray, inputMinPrice) {
     /*
     Returns the array of products filter by min price.
+    If inputMinPrice is null, this function returns the productsArray.
     */
-    return productsArray.filter(product => product.price >= inputMinPrice);
+    return inputMinPrice ? productsArray.filter(product => product.price >= inputMinPrice) : productsArray;
 }
 
 function filterProductsByMaxPrice(productsArray, inputMaxPrice) {
     /*
     Returns the array of products filter by max price.
+    If inputMaxPrice is null, this function returns the productsArray.
     */
-    return productsArray.filter(product => product.price <= inputMaxPrice);
+    return inputMaxPrice ? productsArray.filter(product => product.price <= inputMaxPrice) : productsArray;
 }
 
-function filterProductsByName(productsArray, inputName) {
+function sortProductsBySelectedSort(productsArray, selectedSortMethod) {
     /*
-    Returns the array of products whit products that includes inputName.
+    Returns the array sorted based on selectedSortMethod.
     */
-    return productsArray.filter(product => product.name.toLowerCase().includes(inputName.toLowerCase()));
+    if (selectedSortMethod == SORT_NONE) {
+        return productsArray;
+    }
+
+    let alphabeticalOrder = function (productA, productB) {
+        return productA.name > productB.name ? 1 : -1;
+    }
+
+    if (selectedSortMethod == SORT_NAME) {
+        return productsArray.sort(alphabeticalOrder);
+    }
+
+    let isGreater = function (productA, productB) {
+        return productB.price - productA.price;
+    }
+
+    return selectedSortMethod == SORT_ASC ? productsArray.sort(isGreater) : productsArray.sort(isGreater).reverse();
 }
 
 /* *****************************************************************
@@ -424,7 +478,7 @@ function filterProductsByName(productsArray, inputName) {
 
 function cartEventListeners(cart) {
     /*
-    Event listeners from cart section.
+    Event listeners of cart section.
     It includes buttons 'button-substract-from-cart', 'button-add-to-cart' and 'button-remove-from-cart'. Based on the button selected, this function uses the respective cart methods: cart.substractProductFromCart(product), cart.substractProductFromCart(product) or cart.addProductToCart(product).
     */
     let buttonsSubstractFromCart = document.querySelectorAll(`.${BUTTON_SUBSTRACT_FROM_CART}`);
@@ -457,7 +511,7 @@ function cartEventListeners(cart) {
 
 function ecommerceEventListeners() {
     /*
-    Event listeneres from ecommerce section.
+    Event listeneres of ecommerce section.
     It includes the button 'button-add-product' and uses the cart method cart.addProductToCart(product).
     */
     let buttonsAddToCart = document.querySelectorAll(`.${BUTTON_ADD_PRODUCT}`);
@@ -472,4 +526,37 @@ function ecommerceEventListeners() {
             cart.addProductToCart(getProduct(event.target));
         });
     }
+}
+
+function filterFormEventListeners() {
+    /*
+    Event listeneres of filter form.
+    It uses handleFilterData to update the filter products array.
+    */
+    let filterForm = document.getElementById("filterForm");
+
+    filterForm.addEventListener("submit", handleFilterFormData);
+}
+
+function handleFilterFormData(e) {
+    /*
+    This function handles the data in filter form.
+    It also updates the ecommerce container, based on data.
+    */
+    e.preventDefault();
+    let filterFormData = new FormData(filterForm);
+
+    let inputProductName = filterFormData.get(NAME_PRODUCT_NAME)
+    let inputMinPrice = filterFormData.get(NAME_MIN_PRICE);
+    let inputMaxPrice = filterFormData.get(NAME_MAX_PRICE);
+    let selectSort = filterFormData.get(NAME_SELECT_SORT);
+
+    let productsArrayFiltered = productsArray;
+
+    productsArrayFiltered = filterProductsByName(productsArrayFiltered, inputProductName);
+    productsArrayFiltered = sortProductsBySelectedSort(productsArrayFiltered, selectSort);
+    productsArrayFiltered = filterProductsByMinPrice(productsArrayFiltered, inputMinPrice);
+    productsArrayFiltered = filterProductsByMaxPrice(productsArrayFiltered, inputMaxPrice);
+
+    updateEcommerceContainer(productsArrayFiltered);
 }
