@@ -76,22 +76,18 @@ class Cart {
         /*
         This function returns the total price of all products in cart.
         */
-        let totalPrice = 0;
-        (this.cartArray).forEach(product => {
-            totalPrice += parseFloat(product.price) * parseInt(product.quantity);
-        })
-        return totalPrice;
+        return this.cartArray.reduce((accumulator, cartProduct) => {
+            return accumulator + parseFloat(cartProduct.price) * parseInt(cartProduct.quantity);
+        }, 0);
     }
 
     getTotalQuantity() {
         /*
         This function returns the total quantity of products in cart.
         */
-        let totalQuantity = 0;
-        (this.cartArray).forEach(product => {
-            totalQuantity += parseInt(product.quantity);
-        })
-        return totalQuantity;
+        return this.cartArray.reduce((accumulator, cartProduct) => {
+            return accumulator + parseInt(cartProduct.quantity);
+        }, 0);
     }
 
     generateCartContainerHTML() {
@@ -328,7 +324,7 @@ var productsArray = [
         "P03", "Alfajores de maicena", 800, "../assets/img/products/alfajores_maicena.jpg", "9 alfajores de maicena apilados"
     ),
     new Product(
-        "P04", "Caja de 9 brownies decorados", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
+        "P04", "Brownies tentación", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
     ),
     new Product(
         "P05", "Cakes", 1200, "../assets/img/products/cakes.jpg", "Caja de 3 tortas"
@@ -338,6 +334,24 @@ var productsArray = [
     ),
     new Product(
         "P07", "Alfacookies", 800, "../assets/img/products/alfacookies.jpg", "Caja de 9 alfacookies"
+    ),
+    new Product(
+        "P08", "Tiramisú", 750, "../assets/img/products/tiramisu.jpg", "Torta tiramisú"
+    ),
+    new Product(
+        "P09", "Huevo relleno", 1050, "../assets/img/products/huevo_relleno.jpg", "Huevo de pascua relleno de chocolate"
+    ),
+    new Product(
+        "P10", "Brownie frutillas", 900, "../assets/img/products/brownie_frutillas.jpg", "Brownie de chocolate con frutillas"
+    ),
+    new Product(
+        "P11", "Capelina Mia", 700, "../assets/img/products/capelina_mia.jpg", "Capelina de chocolate blanco con chocotorta"
+    ),
+    new Product(
+        "P12", "Brownie pizza", 900, "../assets/img/products/brownie_pizza.jpg", "Brownie decorado con chocolate"
+    ),
+    new Product(
+        "P13", "Oreos bañadas", 650, "../assets/img/products/oreos_bañadas.jpg", "Caja de 6 oreos bañadas"
     ),
 ];
 
@@ -377,6 +391,31 @@ function generateEcommerceContainerHTML(productsArray) {
     });
 
     return productsContainerRow;
+}
+
+/* *****************************************************************
+ *                    FILTER AND ORDER FUNCTIONS
+ * *****************************************************************/
+
+function filterProductsByMinPrice(productsArray, inputMinPrice) {
+    /*
+    Returns the array of products filter by min price.
+    */
+    return productsArray.filter(product => product.price >= inputMinPrice);
+}
+
+function filterProductsByMaxPrice(productsArray, inputMaxPrice) {
+    /*
+    Returns the array of products filter by max price.
+    */
+    return productsArray.filter(product => product.price <= inputMaxPrice);
+}
+
+function filterProductsByName(productsArray, inputName) {
+    /*
+    Returns the array of products whit products that includes inputName.
+    */
+    return productsArray.filter(product => product.name.toLowerCase().includes(inputName.toLowerCase()));
 }
 
 /* *****************************************************************
