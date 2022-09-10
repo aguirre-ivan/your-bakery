@@ -115,13 +115,13 @@ class Cart {
             divCard.innerHTML = `
                 <div class="card mb-3" style="max-width: 800px;" id="${product.productId}">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-lg-4 mt-2">
                             <img
                                 src="${product.imgSrc}"
-                                class="img-fluid rounded-start"
+                                class="img-fluid rounded"
                                 alt="${product.imgAlt}">
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     ${product.name}
@@ -153,13 +153,10 @@ class Cart {
 
         let divTotal = document.createElement("div");
         divTotal.innerHTML = `
-            <div class="row offset-8 text-end pt-4" style="max-width: 200px;">
+            <div class="row offset-md-9 text-end pt-4" style="max-width: 200px;">
                 <p class="h4">
                     Total: $${this.getTotalPrice()}
                 </p>
-                <a href="#" class="btn btn-dark">
-                    Comprar
-                </a>
             </div>
         `;
 
