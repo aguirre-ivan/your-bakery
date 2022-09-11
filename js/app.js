@@ -5,6 +5,10 @@
 // Container IDs
 const CART_CONTAINER_ID = "cart-container";
 const ECOMMERCE_CONTAINER_ID = "ecommerce-container";
+const DELIVERY_FORM_CONTAINER_ID = "delivery-form-container";
+
+// Select ID
+const DELIVERY_SELECT_ID = "deliveryMode"
 
 // Buttons classes
 const BUTTON_ADD_PRODUCT = "button-add-product";
@@ -23,6 +27,9 @@ const SORT_NONE = 0;
 const SORT_NAME = 1;
 const SORT_DESC = 2;
 const SORT_ASC = 3;
+
+// Select delivery number
+const DELIVERY_ADDRESS_ON = 2;
 
 /* *****************************************************************
  *                              CLASSES
@@ -115,13 +122,13 @@ class Cart {
             divCard.innerHTML = `
                 <div class="card mb-3" style="max-width: 800px;" id="${product.productId}">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-lg-4 mt-2">
                             <img
                                 src="${product.imgSrc}"
-                                class="img-fluid rounded-start"
+                                class="img-fluid rounded"
                                 alt="${product.imgAlt}">
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     ${product.name}
@@ -153,13 +160,10 @@ class Cart {
 
         let divTotal = document.createElement("div");
         divTotal.innerHTML = `
-            <div class="row offset-8 text-end pt-4" style="max-width: 200px;">
+            <div class="row offset-md-9 text-end pt-4" style="max-width: 200px;">
                 <p class="h4">
                     Total: $${this.getTotalPrice()}
                 </p>
-                <a href="#" class="btn btn-dark">
-                    Comprar
-                </a>
             </div>
         `;
 
@@ -205,12 +209,10 @@ class Cart {
         this.updateCartArrayFromLocalStorage();
         this.renderCartNavbar();
 
-        if (document.getElementById(CART_CONTAINER_ID)) {
-            if (this.cartArray.length === 0) {
-                renderProductsContainer(CART_CONTAINER_ID, this.generateEmptyCartContainerHTML());
-            } else {
-                renderProductsContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
-            }
+        if (this.cartArray.length === 0) {
+            renderElementInContainer(CART_CONTAINER_ID, this.generateEmptyCartContainerHTML());
+        } else {
+            renderElementInContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
         }
 
         cartEventListeners(cart);
@@ -298,90 +300,16 @@ class Cart {
 }
 
 /* *****************************************************************
- *                         INITIALIZATION
+ *                        AUX RENDER FUNCTIONS
  * *****************************************************************/
 
-/*                              CART                               */
-
-// Initialize cart in localStorage
-if (!localStorage.getItem("cart")) {
-    localStorage.setItem("cart", []);
-}
-
-// Cart object initialization
-let cart = new Cart;
-
-// Render cart container from localStorage
-cart.renderCartContainerFromLocalStorage();
-
-/*                          ECOMMERCE                             */
-
-// Products array of ecommerce
-var productsArray = [
-    new Product(
-        "P00", "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"
-    ),
-    new Product(
-        "P01", "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
-    ),
-    new Product(
-        "P02", "Cheescake", 800, "../assets/img/products/cheesecake.jpg", "Torta cheesecake"
-    ),
-    new Product(
-        "P03", "Alfajores de maicena", 800, "../assets/img/products/alfajores_maicena.jpg", "9 alfajores de maicena apilados"
-    ),
-    new Product(
-        "P04", "Brownies tentación", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
-    ),
-    new Product(
-        "P05", "Cakes", 1200, "../assets/img/products/cakes.jpg", "Caja de 3 tortas"
-    ),
-    new Product(
-        "P06", "Budines", 1000, "../assets/img/products/budines.jpg", "Caja de 3 budines"
-    ),
-    new Product(
-        "P07", "Alfacookies", 800, "../assets/img/products/alfacookies.jpg", "Caja de 9 alfacookies"
-    ),
-    new Product(
-        "P08", "Tiramisú", 750, "../assets/img/products/tiramisu.jpg", "Torta tiramisú"
-    ),
-    new Product(
-        "P09", "Huevo relleno", 1050, "../assets/img/products/huevo_relleno.jpg", "Huevo de pascua relleno de chocolate"
-    ),
-    new Product(
-        "P10", "Brownie frutillas", 900, "../assets/img/products/brownie_frutillas.jpg", "Brownie de chocolate con frutillas"
-    ),
-    new Product(
-        "P11", "Capelina Mia", 700, "../assets/img/products/capelina_mia.jpg", "Capelina de chocolate blanco con chocotorta"
-    ),
-    new Product(
-        "P12", "Brownie pizza", 900, "../assets/img/products/brownie_pizza.jpg", "Brownie decorado con chocolate"
-    ),
-    new Product(
-        "P13", "Oreos bañadas", 650, "../assets/img/products/oreos_bañadas.jpg", "Caja de 6 oreos bañadas"
-    ),
-];
-
-// Render ecommerce container
-if (document.getElementById(ECOMMERCE_CONTAINER_ID)) {
-    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
-    filterFormEventListeners();
-}
-
-// Event listeners on ecommerce
-ecommerceEventListeners();
-
-/* *****************************************************************
- *                              FUNCTIONS
- * *****************************************************************/
-
-function renderProductsContainer(productsContainerId, productsToAppend) {
+function renderElementInContainer(containerId, elementToAppend) {
     /*
-    This functions checks if document contains the productsContainerId and then appends productsToAppend to the container finded.
+    This functions checks if document contains the containerId and then appends elementToAppend to the container finded.
     */
-    if (document.getElementById(productsContainerId)) {
-        let cartContainer = document.getElementById(productsContainerId);
-        cartContainer.appendChild(productsToAppend);
+    if (document.getElementById(containerId)) {
+        let containerFinded = document.getElementById(containerId);
+        containerFinded.appendChild(elementToAppend);
     }
 }
 
@@ -418,7 +346,56 @@ function updateEcommerceContainer(productsArray) {
     Updates the ecommerce container. First cleans the render and then render the products container with productsArray.
     */
     cleanRender(ECOMMERCE_CONTAINER_ID);
-    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+    renderElementInContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+}
+
+function generateDeliveryAddressForm() {
+    /*
+    This function returns the delivery form container.
+    */
+    let divFormRow = document.createElement("div");
+    divFormRow.classList.add("row", "g-3");
+    divFormRow.innerHTML = `
+        <div class="col-7 col-md-4">
+            <label for="inputState" class="form-label">Ciudad</label>
+            <select id="inputState" class="form-select" required>
+                <option value="1" selected>Elegir</option>
+                <option value="2">CABA</option>
+                <option value="3">GBA</option>
+            </select>
+        </div>
+
+        <div class="col-5 col-md-2">
+            <label for="inputCP" class="form-label">CP</label>
+            <input type="text" class="form-control" id="inputCP" placeholder="CP" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Localidad</label>
+            <input type="text" class="form-control" id="inputCity"
+                placeholder="Ingrese localidad" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputAddress" class="form-label">Direccion</label>
+            <input type="text" class="form-control" id="inputAddress"
+                placeholder="Ingrese su calle" required>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label for="inputAddressNumber" class="form-label">Numero</label>
+            <input type="text" class="form-control" id="inputAddressNumber"
+                placeholder="N°" required>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label for="inputAddressFloor" class="form-label">Piso</label>
+            <input type="text" class="form-control" id="inputAddressFloor"
+                placeholder="N°">
+        </div>
+    `;
+
+    return divFormRow;
 }
 
 /* *****************************************************************
@@ -528,6 +505,22 @@ function ecommerceEventListeners() {
     }
 }
 
+function selectDeliveryModeEventListener() {
+    /*
+    Event listener of deliveryMode select of buy form.
+    If select value is 2, it renders the delivery address form, else it cleans the render.
+    */
+    let selectDeliveryMode = document.getElementById(DELIVERY_SELECT_ID);
+    selectDeliveryMode.addEventListener("change", function (event) {
+        let deliveryMode = event.target.value;
+        if (deliveryMode == DELIVERY_ADDRESS_ON) {
+            renderElementInContainer(DELIVERY_FORM_CONTAINER_ID, generateDeliveryAddressForm());
+        } else {
+            cleanRender(DELIVERY_FORM_CONTAINER_ID);
+        }
+    });
+}
+
 function filterFormEventListeners() {
     /*
     Event listeneres of filter form.
@@ -559,4 +552,83 @@ function handleFilterFormData(e) {
     productsArrayFiltered = filterProductsByMaxPrice(productsArrayFiltered, inputMaxPrice);
 
     updateEcommerceContainer(productsArrayFiltered);
+}
+
+/* *****************************************************************
+ *                         INITIALIZATION
+ * *****************************************************************/
+
+/*                              CART                               */
+
+// Initialize cart in localStorage
+if (!localStorage.getItem("cart")) {
+    localStorage.setItem("cart", []);
+}
+
+// Cart object initialization
+let cart = new Cart;
+
+// Render cart container from localStorage
+cart.renderCartContainerFromLocalStorage();
+
+/*                          ECOMMERCE                             */
+
+// Products array of ecommerce
+var productsArray = [
+    new Product(
+        "P00", "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"
+    ),
+    new Product(
+        "P01", "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
+    ),
+    new Product(
+        "P02", "Cheescake", 800, "../assets/img/products/cheesecake.jpg", "Torta cheesecake"
+    ),
+    new Product(
+        "P03", "Alfajores de maicena", 800, "../assets/img/products/alfajores_maicena.jpg", "9 alfajores de maicena apilados"
+    ),
+    new Product(
+        "P04", "Brownies tentación", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
+    ),
+    new Product(
+        "P05", "Cakes", 1200, "../assets/img/products/cakes.jpg", "Caja de 3 tortas"
+    ),
+    new Product(
+        "P06", "Budines", 1000, "../assets/img/products/budines.jpg", "Caja de 3 budines"
+    ),
+    new Product(
+        "P07", "Alfacookies", 800, "../assets/img/products/alfacookies.jpg", "Caja de 9 alfacookies"
+    ),
+    new Product(
+        "P08", "Tiramisú", 750, "../assets/img/products/tiramisu.jpg", "Torta tiramisú"
+    ),
+    new Product(
+        "P09", "Huevo relleno", 1050, "../assets/img/products/huevo_relleno.jpg", "Huevo de pascua relleno de chocolate"
+    ),
+    new Product(
+        "P10", "Brownie frutillas", 900, "../assets/img/products/brownie_frutillas.jpg", "Brownie de chocolate con frutillas"
+    ),
+    new Product(
+        "P11", "Capelina Mia", 700, "../assets/img/products/capelina_mia.jpg", "Capelina de chocolate blanco con chocotorta"
+    ),
+    new Product(
+        "P12", "Brownie pizza", 900, "../assets/img/products/brownie_pizza.jpg", "Brownie decorado con chocolate"
+    ),
+    new Product(
+        "P13", "Oreos bañadas", 650, "../assets/img/products/oreos_bañadas.jpg", "Caja de 6 oreos bañadas"
+    ),
+];
+
+// Render ecommerce container
+if (document.getElementById(ECOMMERCE_CONTAINER_ID)) {
+    renderElementInContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+    filterFormEventListeners();
+}
+
+// Event listeners on ecommerce
+ecommerceEventListeners();
+
+// Event listener delivery address form
+if (document.getElementById(DELIVERY_FORM_CONTAINER_ID)) {
+    selectDeliveryModeEventListener();
 }
