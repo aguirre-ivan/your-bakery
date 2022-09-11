@@ -175,45 +175,7 @@
 							</div>
 
 							<div id="delivery-form-container">
-								<div class="row g-3">
-									<div class="col-7 col-md-4">
-										<label for="inputState" class="form-label">Ciudad</label>
-										<select id="inputState" class="form-select">
-											<option value="1" selected>Elegir</option>
-											<option value="2">CABA</option>
-											<option value="3">GBA</option>
-										</select>
-									</div>
-
-									<div class="col-5 col-md-2">
-										<label for="inputCP" class="form-label">CP</label>
-										<input type="text" class="form-control" id="inputCP" placeholder="CP">
-									</div>
-
-									<div class="col-md-6">
-										<label for="inputCity" class="form-label">Localidad</label>
-										<input type="text" class="form-control" id="inputCity"
-											placeholder="Ingrese localidad">
-									</div>
-
-									<div class="col-md-6">
-										<label for="inputAddress" class="form-label">Direccion</label>
-										<input type="text" class="form-control" id="inputAddress"
-											placeholder="Ingrese su calle">
-									</div>
-
-									<div class="col-6 col-md-3">
-										<label for="inputAddressNumber" class="form-label">Numero</label>
-										<input type="text" class="form-control" id="inputAddressNumber"
-											placeholder="N°">
-									</div>
-
-									<div class="col-6 col-md-3">
-										<label for="inputAddressFloor" class="form-label">Piso</label>
-										<input type="text" class="form-control" id="inputAddressFloor"
-											placeholder="N°">
-									</div>
-								</div>
+								<!-- Delivery address form -->
 							</div>
 
 							<div class="form-check my-3">
@@ -233,6 +195,38 @@
 				</div>
 			</div>
 		</section>
+
+		<!-- Modal -->
+		<div class="modal fade" id="cartModal" tabindex="-1"
+			aria-labelledby="cartModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="cartModalLabel">
+							<i class="bi-cart-fill me-1"></i>
+							Carrito
+						</h5>
+						<button type="button" class="btn-close"
+							data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="container" id="cart-container">
+							<!-- Cart cards -->
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">
+							Continuar comprando
+						</button>
+						<a type="button" href="compra.html" class="btn
+							btn-dark">
+							Comprar
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<footer class="py-4 bg-dark mb-0">
 			<div class="container"><p class="m-0 text-center

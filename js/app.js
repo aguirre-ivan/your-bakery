@@ -5,6 +5,7 @@
 // Container IDs
 const CART_CONTAINER_ID = "cart-container";
 const ECOMMERCE_CONTAINER_ID = "ecommerce-container";
+const DELIVERY_FORM_CONTAINER_ID = "delivery-form-container";
 
 // Buttons classes
 const BUTTON_ADD_PRODUCT = "button-add-product";
@@ -23,6 +24,9 @@ const SORT_NONE = 0;
 const SORT_NAME = 1;
 const SORT_DESC = 2;
 const SORT_ASC = 3;
+
+// Select delivery number
+const DELIVERY_ADDRESS_ON = 2;
 
 /* *****************************************************************
  *                              CLASSES
@@ -202,12 +206,10 @@ class Cart {
         this.updateCartArrayFromLocalStorage();
         this.renderCartNavbar();
 
-        if (document.getElementById(CART_CONTAINER_ID)) {
-            if (this.cartArray.length === 0) {
-                renderProductsContainer(CART_CONTAINER_ID, this.generateEmptyCartContainerHTML());
-            } else {
-                renderProductsContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
-            }
+        if (this.cartArray.length === 0) {
+            renderElementInContainer(CART_CONTAINER_ID, this.generateEmptyCartContainerHTML());
+        } else {
+            renderElementInContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
         }
 
         cartEventListeners(cart);
@@ -361,24 +363,29 @@ var productsArray = [
 
 // Render ecommerce container
 if (document.getElementById(ECOMMERCE_CONTAINER_ID)) {
-    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+    renderElementInContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
     filterFormEventListeners();
 }
 
 // Event listeners on ecommerce
 ecommerceEventListeners();
 
+// Event listener delivery address form
+if (document.getElementById(DELIVERY_FORM_CONTAINER_ID)) {
+    selectDeliveryModeEventListener();
+}
+
 /* *****************************************************************
- *                              FUNCTIONS
+ *                        AUX RENDER FUNCTIONS
  * *****************************************************************/
 
-function renderProductsContainer(productsContainerId, productsToAppend) {
+function renderElementInContainer(containerId, elementToAppend) {
     /*
-    This functions checks if document contains the productsContainerId and then appends productsToAppend to the container finded.
+    This functions checks if document contains the containerId and then appends elementToAppend to the container finded.
     */
-    if (document.getElementById(productsContainerId)) {
-        let cartContainer = document.getElementById(productsContainerId);
-        cartContainer.appendChild(productsToAppend);
+    if (document.getElementById(containerId)) {
+        let containerFinded = document.getElementById(containerId);
+        containerFinded.appendChild(elementToAppend);
     }
 }
 
@@ -415,7 +422,56 @@ function updateEcommerceContainer(productsArray) {
     Updates the ecommerce container. First cleans the render and then render the products container with productsArray.
     */
     cleanRender(ECOMMERCE_CONTAINER_ID);
-    renderProductsContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+    renderElementInContainer(ECOMMERCE_CONTAINER_ID, generateEcommerceContainerHTML(productsArray));
+}
+
+function generateDeliveryAddressForm() {
+    /*
+    This function returns the delivery form container.
+    */
+    let divFormRow = document.createElement("div");
+    divFormRow.classList.add("row", "g-3");
+    divFormRow.innerHTML = `
+        <div class="col-7 col-md-4">
+            <label for="inputState" class="form-label">Ciudad</label>
+            <select id="inputState" class="form-select">
+                <option value="1" selected>Elegir</option>
+                <option value="2">CABA</option>
+                <option value="3">GBA</option>
+            </select>
+        </div>
+
+        <div class="col-5 col-md-2">
+            <label for="inputCP" class="form-label">CP</label>
+            <input type="text" class="form-control" id="inputCP" placeholder="CP">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Localidad</label>
+            <input type="text" class="form-control" id="inputCity"
+                placeholder="Ingrese localidad">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputAddress" class="form-label">Direccion</label>
+            <input type="text" class="form-control" id="inputAddress"
+                placeholder="Ingrese su calle">
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label for="inputAddressNumber" class="form-label">Numero</label>
+            <input type="text" class="form-control" id="inputAddressNumber"
+                placeholder="N°">
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label for="inputAddressFloor" class="form-label">Piso</label>
+            <input type="text" class="form-control" id="inputAddressFloor"
+                placeholder="N°">
+        </div>
+    `;
+
+    return divFormRow;
 }
 
 /* *****************************************************************
@@ -523,6 +579,23 @@ function ecommerceEventListeners() {
             cart.addProductToCart(getProduct(event.target));
         });
     }
+}
+
+function selectDeliveryModeEventListener() {
+    /*
+    Event listener of deliveryMode select of buy form.
+    If select value is 2, it renders the delivery address form, else it cleans the render.
+    */
+    let selectDeliveryMode = document.getElementById(DELIVERY_FORM_CONTAINER_ID);
+    selectDeliveryMode.addEventListener("change", function (event) {
+        let deliveryMode = event.target.value;
+
+        if (deliveryMode == DELIVERY_ADDRESS_ON) {
+            renderElementInContainer(DELIVERY_FORM_CONTAINER_ID, generateDeliveryAddressForm());
+        } else {
+            cleanRender(DELIVERY_FORM_CONTAINER_ID);
+        }
+    });
 }
 
 function filterFormEventListeners() {
