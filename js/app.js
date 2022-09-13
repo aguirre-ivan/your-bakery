@@ -261,6 +261,8 @@ class Cart {
             this.cartArray.push(product);
         }
 
+        renderAddedProductToCartToastify(product);
+
         this.updateCartArrayInLocalStorage();
         this.updateRenderFromLocalStorage();
     }
@@ -281,6 +283,8 @@ class Cart {
             }
         }
 
+        renderSubstractedProductFromCartToastify(product);
+
         this.updateCartArrayInLocalStorage();
         this.updateRenderFromLocalStorage();
     }
@@ -293,6 +297,8 @@ class Cart {
         product.resetQuantity();
 
         this.cartArray = this.cartArray.filter(cartProduct => cartProduct.productId != product.productId);
+
+        renderRemovedProductFromCartToastify(product);
 
         this.updateCartArrayInLocalStorage();
         this.updateRenderFromLocalStorage();
@@ -552,6 +558,55 @@ function handleFilterFormData(e) {
     productsArrayFiltered = filterProductsByMaxPrice(productsArrayFiltered, inputMaxPrice);
 
     updateEcommerceContainer(productsArrayFiltered);
+}
+
+/* *****************************************************************
+ *                        TOASTIFY FUNCTIONS
+ * *****************************************************************/
+
+function renderAddedProductToCartToastify(product) {
+    /*
+    This function renders a Toast with the legend "El producto '${product.name}'\nha sido agregado al carrito!"
+    Its used when a product is added to cart.
+    */
+    Toastify({
+        text: `El producto '${product.name}'\nha sido agregado al carrito!`,
+        duration: 3000,
+        gravity: "bottom",
+        style: {
+            background: "linear-gradient(to right, rgb(31, 59, 71), rgb(0, 15, 18))",
+        },
+    }).showToast();
+}
+
+function renderRemovedProductFromCartToastify(product) {
+    /*
+    This function renders a Toast with the legend "El producto ${product.name}'\n ha sido removido del carrito!"
+    Its used when a product is removed from cart.
+    */
+    Toastify({
+        text: `El producto '${product.name}'\n ha sido removido del carrito!`,
+        duration: 3000,
+        gravity: "bottom",
+        style: {
+            background: "linear-gradient(to right, rgb(41, 9, 9), rgb(4, 0, 1))",
+        },
+    }).showToast();
+}
+
+function renderSubstractedProductFromCartToastify(product) {
+    /*
+    This function renders a Toast with the legend "El producto '${product.name}'\nse ha quitado del carrito!"
+    Its used when a product is substracted from cart.
+    */
+    Toastify({
+        text: `El producto '${product.name}'\nse ha quitado del carrito!`,
+        duration: 3000,
+        gravity: "bottom",
+        style: {
+            background: "linear-gradient(to right, rgb(41, 9, 9), rgb(4, 0, 1))",
+        },
+    }).showToast();
 }
 
 /* *****************************************************************
