@@ -579,11 +579,18 @@ if (document.getElementById('buyButton')) {
             emailjs.sendForm(serviceID, templateID, this)
                 .then(() => {
                     btn.value = 'Continuar';
-                    alert('¡Mensaje enviado correctamente!');
+                    swal({
+                        title: '¡Compra realizada correctamente!',
+                        text: 'Revisa tu casilla de correo.',
+                        icon: "success"
+                    });
                 }, (err) => {
                     btn.value = 'Continuar';
-                    console.log(btn.value);
-                    alert(JSON.stringify(err));
+                    swal({
+                        title: '¡Error!',
+                        text: JSON.stringify(err),
+                        icon: "error"
+                    });
                 });
         });
 }
