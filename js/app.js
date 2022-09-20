@@ -184,7 +184,7 @@ class Cart {
                 <div class="col mb-5 text-center">
                     <div class="alert alert-primary" role="alert">
                         ¡Tu carrito se encuentra vacío!
-                        Agregá productos en la sección de la <a href="productos.html">tienda</a>.
+                        Agregá productos en la sección de la tienda.
                     </div>
                 </div>
             </div>
