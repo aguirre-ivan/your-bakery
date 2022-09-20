@@ -184,7 +184,7 @@ class Cart {
                 <div class="col mb-5 text-center">
                     <div class="alert alert-primary" role="alert">
                         ¡Tu carrito se encuentra vacío!
-                        Agregá productos en la sección de la <a href="productos.html">tienda</a>.
+                        Agregá productos en la sección de la tienda.
                     </div>
                 </div>
             </div>
@@ -558,6 +558,41 @@ function handleFilterFormData(e) {
     productsArrayFiltered = filterProductsByMaxPrice(productsArrayFiltered, inputMaxPrice);
 
     updateEcommerceContainer(productsArrayFiltered);
+}
+
+/* *****************************************************************
+ *                        EMAILJS API FUNCTIONS
+ * *****************************************************************/
+
+if (document.getElementById('buyButton')) {
+    const btn = document.getElementById('buyButton');
+
+    document.getElementById('buy-form')
+        .addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            btn.value = 'Enviando...';
+
+            const serviceID = 'default_service';
+            const templateID = 'template_gztd5fb';
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    btn.value = 'Continuar';
+                    swal({
+                        title: '¡Compra realizada correctamente!',
+                        text: 'Revisa tu casilla de correo.',
+                        icon: "success"
+                    });
+                }, (err) => {
+                    btn.value = 'Continuar';
+                    swal({
+                        title: '¡Error!',
+                        text: JSON.stringify(err),
+                        icon: "error"
+                    });
+                });
+        });
 }
 
 /* *****************************************************************

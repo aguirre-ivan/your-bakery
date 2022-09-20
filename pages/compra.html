@@ -24,7 +24,7 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container px-4 px-lg-5 py-2">
-				<a class="navbar-brand px-2" href="#">Your Bakery</a>
+				<a class="navbar-brand px-2" href="../index.html">Your Bakery</a>
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent"
@@ -146,13 +146,14 @@
 						<div>
 							<div class="form-group mb-3">
 								<label for="inputName" class="form-label">Nombre y apellido</label>
-								<input type="text" class="form-control" id="inputName"
+								<input type="text" class="form-control" id="inputName" name="inputName"
 									aria-describedby="emailHelp" placeholder="Ingrese su nombre"
 									required>
 							</div>
 							<div class="form-group mb-3">
 								<label for="inputEmail" class="form-label">Correo electrónico</label>
 								<input type="email" class="form-control" id="inputEmail"
+									name="inputEmail"
 									aria-describedby="emailHelp" placeholder="Ingrese su mail" required>
 								<small id="emailHelp" class="form-text text-muted">
 									No compartiremos tu correo con nadie.
@@ -162,6 +163,7 @@
 							<div class="form-group mb-3">
 								<label for="inputNumber" class="form-label">Numero telefónico</label>
 								<input type="number" class="form-control" id="inputNumber"
+									name="inputNumber"
 									aria-describedby="emailHelp" placeholder="Ingrese su numero" required>
 							</div>
 
@@ -170,7 +172,7 @@
 									Seleccione el modo de entrega
 								</label>
 								<select class="form-select" name="deliveryMode"
-									id="deliveryMode" class="form-control">
+									id="deliveryMode" name="deliveryMode" class="form-control">
 									<option value="1" selected>Retiro en tienda</option>
 									<option value="2">Entrega a domicilio</option>
 								</select>
@@ -185,15 +187,20 @@
 								<label class="form-check-label" for="newsletterCheck">Acepto recibir
 									ofertas</label>
 							</div>
-
 						</div>
 
 						<div class="ms-auto">
-							<button type="#" class="btn btn-dark">
-								Continuar
-							</button>
+							<input type="submit" class="btn btn-dark" id="buyButton"
+								value="Continuar">
 						</div>
 					</form>
+
+					<!-- EmailJS scripts -->
+					<script type="text/javascript"
+						src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+					<script type="text/javascript">
+						emailjs.init('9H0SnSFB8-veD_Qnn');
+					</script>
 				</div>
 			</div>
 		</section>
@@ -240,6 +247,7 @@
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript"
 			src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script src="../js/app.js"></script>
 	</body>
 </html>
