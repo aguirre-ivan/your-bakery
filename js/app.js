@@ -561,6 +561,34 @@ function handleFilterFormData(e) {
 }
 
 /* *****************************************************************
+ *                        EMAILJS API FUNCTIONS
+ * *****************************************************************/
+
+if (document.getElementById('buyButton')) {
+    const btn = document.getElementById('buyButton');
+
+    document.getElementById('buy-form')
+        .addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            btn.value = 'Enviando...';
+
+            const serviceID = 'default_service';
+            const templateID = 'template_gztd5fb';
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    btn.value = 'Continuar';
+                    alert('¡Mensaje enviado correctamente!');
+                }, (err) => {
+                    btn.value = 'Continuar';
+                    console.log(btn.value);
+                    alert(JSON.stringify(err));
+                });
+        });
+}
+
+/* *****************************************************************
  *                        TOASTIFY FUNCTIONS
  * *****************************************************************/
 
