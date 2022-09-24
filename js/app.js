@@ -20,6 +20,7 @@ const BUTTON_ADD_PRODUCT = "button-add-product";
 const BUTTON_SUBSTRACT_FROM_CART = "button-substract-from-cart";
 const BUTTON_ADD_TO_CART = "button-add-to-cart";
 const BUTTON_REMOVE_FROM_CART = "button-remove-from-cart";
+const BUTTON_BUY_CART = "submit-cart-purchase"
 
 // Filter form ids
 const FILTER_FORM_ID = "filterForm"
@@ -36,6 +37,9 @@ const SORT_ASC = 3;
 
 // Select delivery number
 const DELIVERY_ADDRESS_ON = 2;
+
+// Absolute PATHS
+const COMPRA_PATH = new URL("../pages/compra.html", document.baseURI).href;
 
 /* *****************************************************************
  *                              CLASSES
@@ -465,6 +469,23 @@ function sortProductsBySelectedSort(productsArray, selectedSortMethod) {
  *                     EVENT LISTENERS FUNCTIONS
  * *****************************************************************/
 
+function submitCartPurchaseEventListener(cart) {
+    /*
+    Event listeners of submit carat purchase button.
+    If the cart is empty, this function render a sweet alert. But if the cart has products its redirects to compra.html page.
+    */
+    console.log("hola")
+    let buttonBuyCart = document.getElementById(BUTTON_BUY_CART);
+
+    buttonBuyCart.addEventListener("click", function (_) {
+        if (cart.getTotalQuantity() == 0) {
+            alert("empty cart!");
+        } else {
+            window.location.href = COMPRA_PATH;
+        }
+    });
+}
+
 function cartEventListeners(cart) {
     /*
     Event listeners of cart section.
@@ -670,6 +691,9 @@ let cart = new Cart;
 
 // Render cart container from localStorage
 cart.renderCartContainerFromLocalStorage();
+
+// Cart event listener
+submitCartPurchaseEventListener(cart);
 
 /*                         PURCHASE FORM                          */
 
