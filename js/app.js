@@ -225,7 +225,7 @@ class Cart {
             renderElementInContainer(CART_CONTAINER_ID, this.generateCartContainerHTML());
         }
 
-        cartEventListeners(cart);
+        cartEventListeners(this);
     }
 
     updateRenderFromLocalStorage() {
@@ -474,7 +474,6 @@ function submitCartPurchaseEventListener(cart) {
     Event listeners of submit carat purchase button.
     If the cart is empty, this function render a sweet alert. But if the cart has products its redirects to compra.html page.
     */
-    console.log("hola")
     let buttonBuyCart = document.getElementById(BUTTON_BUY_CART);
 
     buttonBuyCart.addEventListener("click", function (_) {
@@ -490,6 +489,7 @@ function cartEventListeners(cart) {
     /*
     Event listeners of cart section.
     It includes buttons 'button-substract-from-cart', 'button-add-to-cart' and 'button-remove-from-cart'. Based on the button selected, this function uses the respective cart methods: cart.substractProductFromCart(product), cart.substractProductFromCart(product) or cart.addProductToCart(product).
+    Its also calls submitCartPurchaseEventListener.
     */
     let buttonsSubstractFromCart = document.querySelectorAll(`.${BUTTON_SUBSTRACT_FROM_CART}`);
     let buttonsAddToCart = document.querySelectorAll(`.${BUTTON_ADD_TO_CART}`);
@@ -517,6 +517,9 @@ function cartEventListeners(cart) {
             cart.removeProductFromCart(getProduct(event.target)); // removeProductButton is one div up
         });
     }
+
+    // Submit event listener
+    submitCartPurchaseEventListener(cart);
 }
 
 function ecommerceEventListeners() {
@@ -691,9 +694,6 @@ let cart = new Cart;
 
 // Render cart container from localStorage
 cart.renderCartContainerFromLocalStorage();
-
-// Cart event listener
-submitCartPurchaseEventListener(cart);
 
 /*                         PURCHASE FORM                          */
 
