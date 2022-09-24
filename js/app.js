@@ -478,7 +478,7 @@ function submitCartPurchaseEventListener(cart) {
 
     buttonBuyCart.addEventListener("click", function (_) {
         if (cart.getTotalQuantity() == 0) {
-            alert("empty cart!");
+            sweetAlertEmptyCart();
         } else {
             window.location.href = COMPRA_PATH;
         }
@@ -613,25 +613,58 @@ function sendEmailJS() {
             emailjs.sendForm(serviceID, templateID, this)
                 .then(() => {
                     btn.value = 'Continuar';
-                    swal({
-                        title: '¡Compra realizada correctamente!',
-                        text: 'Revisa tu casilla de correo.',
-                        icon: "success"
-                    });
+                    sweetAlertSubmitPurchaseOk();
                 }, (err) => {
                     btn.value = 'Continuar';
-                    swal({
-                        title: '¡Error!',
-                        text: JSON.stringify(err),
-                        icon: "error"
-                    });
+                    sweetAlertSubmitError(err);
                 });
         });
 }
 
 /* *****************************************************************
+ *                        SWEETALERT FUNCTIONS
+ * *****************************************************************/
+
+// See: https://sweetalert.js.org/guides/
+
+function sweetAlertSubmitError(err) {
+    /*
+    Alert of an error.
+    */
+    swal({
+        title: '¡Error!',
+        text: JSON.stringify(err),
+        icon: "error"
+    });
+}
+
+function sweetAlertSubmitPurchaseOk() {
+    /*
+    Alert of purchase succefull.
+    */
+    swal({
+        title: '¡Compra realizada correctamente!',
+        text: 'Revisa tu casilla de correo.',
+        icon: "success"
+    });
+}
+
+function sweetAlertEmptyCart() {
+    /*
+    Alert of empty cart error.
+    */
+    swal({
+        title: 'Error',
+        text: 'El carrito está vacío.',
+        icon: "info"
+    });
+}
+
+/* *****************************************************************
  *                        TOASTIFY FUNCTIONS
  * *****************************************************************/
+
+// See: https://github.com/apvarun/toastify-js
 
 function renderAddedProductToCartToastify(product) {
     /*
