@@ -2,21 +2,27 @@
  *                              CONSTS
  * *****************************************************************/
 
+// Local storage keys
+const CART_KEY = "cart";
+
 // Container IDs
 const CART_CONTAINER_ID = "cart-container";
 const ECOMMERCE_CONTAINER_ID = "ecommerce-container";
 const DELIVERY_FORM_CONTAINER_ID = "delivery-form-container";
 
-// Select ID
+// Purchase form ids
+const PURCHASE_FORM_ID = "buy-form";
 const DELIVERY_SELECT_ID = "deliveryMode"
+const BUTTON_SUBMIT_PURCHASE = "buyButton";
 
-// Buttons classes
+// Buttons id
 const BUTTON_ADD_PRODUCT = "button-add-product";
 const BUTTON_SUBSTRACT_FROM_CART = "button-substract-from-cart";
 const BUTTON_ADD_TO_CART = "button-add-to-cart";
 const BUTTON_REMOVE_FROM_CART = "button-remove-from-cart";
 
-// Form names
+// Filter form ids
+const FILTER_FORM_ID = "filterForm"
 const NAME_PRODUCT_NAME = "productName"
 const NAME_MIN_PRICE = "minPrice"
 const NAME_MAX_PRICE = "maxPrice"
@@ -532,7 +538,7 @@ function filterFormEventListeners() {
     Event listeneres of filter form.
     It uses handleFilterData to update the filter products array.
     */
-    let filterForm = document.getElementById("filterForm");
+    let filterForm = document.getElementById(FILTER_FORM_ID);
 
     filterForm.addEventListener("submit", handleFilterFormData);
 }
@@ -564,10 +570,14 @@ function handleFilterFormData(e) {
  *                        EMAILJS API FUNCTIONS
  * *****************************************************************/
 
-if (document.getElementById('buyButton')) {
-    const btn = document.getElementById('buyButton');
+function sendEmailJS() {
+    /*
+    Purchase form event listener. This function uses EmailJS API to send an email with the purchase info.
+    See: https://www.emailjs.com/docs/
+    */
+    const btn = document.getElementById(BUTTON_SUBMIT_PURCHASE);
 
-    document.getElementById('buy-form')
+    document.getElementById(PURCHASE_FORM_ID)
         .addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -651,8 +661,8 @@ function renderSubstractedProductFromCartToastify(product) {
 /*                              CART                               */
 
 // Initialize cart in localStorage
-if (!localStorage.getItem("cart")) {
-    localStorage.setItem("cart", []);
+if (!localStorage.getItem(CART_KEY)) {
+    localStorage.setItem(CART_KEY, []);
 }
 
 // Cart object initialization
@@ -660,6 +670,12 @@ let cart = new Cart;
 
 // Render cart container from localStorage
 cart.renderCartContainerFromLocalStorage();
+
+/*                         PURCHASE FORM                          */
+
+if (document.getElementById(BUTTON_SUBMIT_PURCHASE)) {
+    sendEmailJS();
+}
 
 /*                          ECOMMERCE                             */
 
