@@ -119,6 +119,13 @@ class Cart {
         }, 0);
     }
 
+    isEmpty() {
+        /*
+        Returns true if the cart is empty.
+        */
+        return this.cartArray.length == 0;
+    }
+
     generateCartContainerHTML() {
         /*
         This function returns the cartArray in a div cart html structure for Cart section.
@@ -477,7 +484,7 @@ function submitCartPurchaseEventListener(cart) {
     let buttonBuyCart = document.getElementById(BUTTON_BUY_CART);
 
     buttonBuyCart.addEventListener("click", function (_) {
-        if (cart.getTotalQuantity() == 0) {
+        if (cart.isEmpty()) {
             sweetAlertEmptyCart();
         } else {
             window.location.href = COMPRA_PATH;
