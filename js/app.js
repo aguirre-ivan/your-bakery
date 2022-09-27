@@ -38,9 +38,9 @@ const SORT_ASC = 3;
 // Select delivery number
 const DELIVERY_ADDRESS_ON = 2;
 
-// Absolute PATHS
-const COMPRA_PATH = new URL("../pages/compra.html", document.baseURI).href;
-const INITIAL_IMG_PATH = new URL(`/assets/img/products/`, document.baseURI).href;
+// PATHS
+const COMPRA_PATH = "compra.html";
+const INITIAL_IMG_PATH = "assets/img/products/"
 
 /* *****************************************************************
  *                              CLASSES
