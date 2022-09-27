@@ -40,6 +40,7 @@ const DELIVERY_ADDRESS_ON = 2;
 
 // Absolute PATHS
 const COMPRA_PATH = new URL("../pages/compra.html", document.baseURI).href;
+const INITIAL_IMG_PATH = new URL(`/assets/img/products/`, document.baseURI).href;
 
 /* *****************************************************************
  *                              CLASSES
@@ -746,46 +747,46 @@ if (document.getElementById(BUTTON_SUBMIT_PURCHASE)) {
 // Products array of ecommerce
 var productsArray = [
     new Product(
-        "P00", "Alfajores San Valentin", 800, "../assets/img/products/alfajores_san_valentin.jpg", "Caja de 6 alfajores decorados"
+        "P00", "Alfajores San Valentin", 800, `${INITIAL_IMG_PATH}alfajores_san_valentin.jpg`, "Caja de 6 alfajores decorados"
     ),
     new Product(
-        "P01", "Caja tentacion", 1500, "../assets/img/products/caja_tentacion.jpg", "Caja con brownies y masitas de chocolate"
+        "P01", "Caja tentacion", 1500, `${INITIAL_IMG_PATH}caja_tentacion.jpg`, "Caja con brownies y masitas de chocolate"
     ),
     new Product(
-        "P02", "Cheescake", 800, "../assets/img/products/cheesecake.jpg", "Torta cheesecake"
+        "P02", "Cheescake", 800, `${INITIAL_IMG_PATH}cheesecake.jpg`, "Torta cheesecake"
     ),
     new Product(
-        "P03", "Alfajores de maicena", 800, "../assets/img/products/alfajores_maicena.jpg", "9 alfajores de maicena apilados"
+        "P03", "Alfajores de maicena", 800, `${INITIAL_IMG_PATH}alfajores_maicena.jpg`, "9 alfajores de maicena apilados"
     ),
     new Product(
-        "P04", "Brownies tentación", 1200, "../assets/img/products/caja_brownies.jpg", "Caja de 9 brownies decorados"
+        "P04", "Brownies tentación", 1200, `${INITIAL_IMG_PATH}caja_brownies.jpg`, "Caja de 9 brownies decorados"
     ),
     new Product(
-        "P05", "Cakes", 1200, "../assets/img/products/cakes.jpg", "Caja de 3 tortas"
+        "P05", "Cakes", 1200, `${INITIAL_IMG_PATH}cakes.jpg`, "Caja de 3 tortas"
     ),
     new Product(
-        "P06", "Budines", 1000, "../assets/img/products/budines.jpg", "Caja de 3 budines"
+        "P06", "Budines", 1000, `${INITIAL_IMG_PATH}budines.jpg`, "Caja de 3 budines"
     ),
     new Product(
-        "P07", "Alfacookies", 800, "../assets/img/products/alfacookies.jpg", "Caja de 9 alfacookies"
+        "P07", "Alfacookies", 800, `${INITIAL_IMG_PATH}alfacookies.jpg`, "Caja de 9 alfacookies"
     ),
     new Product(
-        "P08", "Tiramisú", 750, "../assets/img/products/tiramisu.jpg", "Torta tiramisú"
+        "P08", "Tiramisú", 750, `${INITIAL_IMG_PATH}tiramisu.jpg`, "Torta tiramisú"
     ),
     new Product(
-        "P09", "Huevo relleno", 1050, "../assets/img/products/huevo_relleno.jpg", "Huevo de pascua relleno de chocolate"
+        "P09", "Huevo relleno", 1050, `${INITIAL_IMG_PATH}huevo_relleno.jpg`, "Huevo de pascua relleno de chocolate"
     ),
     new Product(
-        "P10", "Brownie frutillas", 900, "../assets/img/products/brownie_frutillas.jpg", "Brownie de chocolate con frutillas"
+        "P10", "Brownie frutillas", 900, `${INITIAL_IMG_PATH}brownie_frutillas.jpg`, "Brownie de chocolate con frutillas"
     ),
     new Product(
-        "P11", "Capelina Mia", 700, "../assets/img/products/capelina_mia.jpg", "Capelina de chocolate blanco con chocotorta"
+        "P11", "Capelina Mia", 700, `${INITIAL_IMG_PATH}capelina_mia.jpg`, "Capelina de chocolate blanco con chocotorta"
     ),
     new Product(
-        "P12", "Brownie pizza", 900, "../assets/img/products/brownie_pizza.jpg", "Brownie decorado con chocolate"
+        "P12", "Brownie pizza", 900, `${INITIAL_IMG_PATH}brownie_pizza.jpg`, "Brownie decorado con chocolate"
     ),
     new Product(
-        "P13", "Oreos bañadas", 650, "../assets/img/products/oreos_bañadas.jpg", "Caja de 6 oreos bañadas"
+        "P13", "Oreos bañadas", 650, `${INITIAL_IMG_PATH}oreos_bañadas.jpg`, "Caja de 6 oreos bañadas"
     ),
 ];
 
