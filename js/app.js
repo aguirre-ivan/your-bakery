@@ -342,7 +342,7 @@ function generateEcommerceContainerHTML(productsArray) {
     This function returns an ecommerce div container with all cards product of productsArray.
     */
     let productsContainerRow = document.createElement("div");
-    productsContainerRow.classList.add("row", "gx-4", "gx-lg-5", "row-cols-2", "row-cols-md-3", "row-cols-xl-4", "justify-content-center");
+    productsContainerRow.classList.add("row", "gx-4", "gx-lg-5", "row-cols-1", "row-cols-md-3", "row-cols-xl-4", "justify-content-center");
 
     productsArray.forEach(product => {
         productsContainerRow.appendChild(
